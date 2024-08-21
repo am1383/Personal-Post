@@ -25,11 +25,6 @@ class AdminController extends Controller {
     }
 
     public function showPost (Request $request) {
-        if (!auth()->check()) {
-            return response()->json([
-                'message' => 'Unauthorized'
-            ]);
-        }
 
         $user = User::find(auth()->id());
         $posts = $user->posts;
@@ -40,11 +35,6 @@ class AdminController extends Controller {
 
     public function addPost(Request $request)
     {
-        if (!auth()->check()) {
-            return response()->json([
-                'message' => 'Unauthorized'
-            ]);
-        }
            $this->validationPost($request);
 
             Post::create([
@@ -57,5 +47,44 @@ class AdminController extends Controller {
                 'message' => 'Post created'
             ]);
         }
+
+    public function deletePost(Request $request)
+    {
+        $post = Post::find($request->id);
+
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found'
+            ], 404);
+        }
+
+        $post->delete();
+
+        return response()->json([
+            'message' => 'Post deleted'
+        ]);
     }
+    public function editPost(Request $request)
+    {
+        $this->validationPost($request);
+
+        $post = Post::find($request->id);
+
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found'
+            ], 404);
+        }
+
+        $post->update([
+            'title' => $request->title,
+            'comment' => $request->comment,
+        ]);
+
+        return response()->json([
+            'message' => 'Post updated'
+        ]);
+    }
+
+}
 
