@@ -51,7 +51,7 @@ class LoginController extends Controller
     protected function sendFailedLoginResponse(Request $request) {
         $user = $this->guard()->user();
 
-        throw ValidationException::withMessages([
+        return response()->json([
             $this->username() => 'Invalid Credentials'
         ]);
     }

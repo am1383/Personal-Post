@@ -10,8 +10,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout.api');
     Route::post('admin/show', [AdminController::class, 'showPost']);
     Route::post('admin/add', [AdminController::class, 'addPost']);
-    Route::post('admin/edit', [AdminController::class, 'editPost']);
-    Route::post('admin/delete', [AdminController::class, 'deletePost']);
+    Route::put('admin/edit', [AdminController::class, 'editPost']);
+    Route::delete('admin/delete', [AdminController::class, 'deletePost']);
+    Route::put('admin/password', [AdminController::class, 'editPassword']);
 });
 
 Route::group(['middleware' => ['guest:api']], function () {
