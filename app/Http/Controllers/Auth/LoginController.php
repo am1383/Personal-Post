@@ -27,6 +27,10 @@ class LoginController extends Controller
 
     protected function attemptlogin(Request $request)
     {
+        if (auth()->user()) return response()->json([
+            'message' => "User Is Login, Please Log Out For Changing Account"
+        ], 201);
+
         $token = $this->guard()->attempt($this->credentials($request));
         if (!$token) {
             return false;
