@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Post;
 use App\Rules\CheckOldPassword;
@@ -71,7 +70,7 @@ class AdminController extends Controller
     public function deletePost(Request $request)
     {
         $post = Post::find($request->id);
-
+        $this->authorize('delete', $post);
         if (!$post) {
             return response()->json([
                 'message' => 'Post not found'
@@ -91,8 +90,8 @@ class AdminController extends Controller
     public function editPost(Request $request)
     {
         $this->validationPost($request);
-
         $post = Post::find($request->id);
+        $this->authorize('update', $request);
 
         if (!$post) {
             return response()->json([
